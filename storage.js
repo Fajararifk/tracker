@@ -1,29 +1,23 @@
-const DB_NAME = "ibadah-db";
-const STORE = "records";
+const DB = "ibadah-db";
+const STORE = "days";
 
 function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, 1);
-
-    req.onupgradeneeded = () => {
-      req.result.createObjectStore(STORE, { keyPath: "date" });
-    };
-
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+  return new Promise(res => {
+    const r = indexedDB.open(DB, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore(STORE, { keyPath: "date" });
+    r.onsuccess = () => res(r.result);
   });
 }
 
-async function saveToday(data) {
+async function saveDay(data) {
   const db = await openDB();
-  const tx = db.transaction(STORE, "readwrite");
-  tx.objectStore(STORE).put(data);
+  db.transaction(STORE, "readwrite").objectStore(STORE).put(data);
 }
 
-async function getAll() {
+async function getAllDays() {
   const db = await openDB();
   return new Promise(res => {
-    const req = db.transaction(STORE).objectStore(STORE).getAll();
-    req.onsuccess = () => res(req.result);
+    const r = db.transaction(STORE).objectStore(STORE).getAll();
+    r.onsuccess = () => res(r.result);
   });
 }

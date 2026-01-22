@@ -1,43 +1,57 @@
 const today = new Date().toISOString().slice(0,10);
-
-const inputs = document.querySelectorAll("input[type=checkbox]");
-const tilawahInput = document.getElementById("tilawah");
-const statText = document.getElementById("statText");
+const prayers = ["subuh","dzuhur","ashar","maghrib","isya"];
 
 document.getElementById("saveBtn").onclick = async () => {
   const data = {
     date: today,
-    tilawah: Number(tilawahInput.value || 0)
+    prayers: {},
+    jamaahType: jamaahType.value,
+    location: location.value,
+    takbir: takbir.checked,
+    tilawah: +tilawah.value || 0,
+    dzikirPagi: dzikirPagi.checked,
+    dzikirPetang: dzikirPetang.checked,
+    puasa: puasa.checked,
+    sedekah: sedekah.checked
   };
 
-  inputs.forEach(i => data[i.dataset.key] = i.checked);
+  document.querySelectorAll(".prayer").forEach(p => {
+    data.prayers[p.dataset.prayer] = p.querySelector("input").checked;
+  });
 
-  await saveToday(data);
+  await saveDay(data);
   loadStats();
 };
 
 async function loadStats() {
-  const all = await getAll();
+  const all = await getAllDays();
   if (!all.length) return;
 
-  const missedSubuh = all.filter(d => !d.subuh).length;
-  statText.textContent =
-    `Total hari tercatat: ${all.length}. Subuh terlewat: ${missedSubuh} hari.`;
+  let html = `<p>Total hari tercatat: <b>${all.length}</b></p>`;
+
+  prayers.forEach(p => {
+    const missed = all.filter(d => !d.prayers[p]).length;
+    html += `<p>${p.toUpperCase()} terlewat: ${missed} hari</p>`;
+  });
+
+  const jamaah = all.filter(d => d.jamaahType === "jamaah").length;
+  html += `<p>Sholat berjamaah: ${jamaah} hari</p>`;
+
+  const masjid = all.filter(d => d.location === "masjid").length;
+  html += `<p>Ke masjid: ${masjid} hari</p>`;
+
+  const takbir = all.filter(d => d.takbir).length;
+  html += `<p>Takbir bareng imam: ${takbir} hari</p>`;
+
+  document.getElementById("stats").innerHTML = html;
 }
 
-document.getElementById("toggleTheme").onclick = () => {
+toggleTheme.onclick = () => {
   document.body.classList.toggle("dark");
-  localStorage.setItem("theme",
-    document.body.classList.contains("dark") ? "dark" : "light");
 };
-
-if (localStorage.getItem("theme") === "dark") {
-  document.body.classList.add("dark");
-}
 
 loadStats();
 
-// PWA
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
 }
