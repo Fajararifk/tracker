@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tracker Ibadah Pribadi</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🕌 Tracker Ibadah</h1>
+    <button id="toggleTheme">🌙</button>
+  </header>
+
+  <main>
+    <section id="today">
+      <h2>Hari Ini</h2>
+
+      <div class="group">
+        <h3>Sholat Wajib</h3>
+        <label><input type="checkbox" data-key="subuh"> Subuh</label>
+        <label><input type="checkbox" data-key="dzuhur"> Dzuhur</label>
+        <label><input type="checkbox" data-key="ashar"> Ashar</label>
+        <label><input type="checkbox" data-key="maghrib"> Maghrib</label>
+        <label><input type="checkbox" data-key="isya"> Isya</label>
+      </div>
+
+      <div class="group">
+        <h3>Sholat Sunnah</h3>
+        <label><input type="checkbox" data-key="dhuha"> Dhuha</label>
+        <label><input type="checkbox" data-key="tahajud"> Tahajud</label>
+        <label><input type="checkbox" data-key="witir"> Witir</label>
+      </div>
+
+      <div class="group">
+        <h3>Amalan Lain</h3>
+        <label>Tilawah (halaman): <input type="number" id="tilawah" min="0"></label>
+        <label><input type="checkbox" data-key="dzikirPagi"> Dzikir Pagi</label>
+        <label><input type="checkbox" data-key="dzikirPetang"> Dzikir Petang</label>
+        <label><input type="checkbox" data-key="puasa"> Puasa Sunnah</label>
+        <label><input type="checkbox" data-key="sedekah"> Sedekah</label>
+      </div>
+
+      <button id="saveBtn">Simpan</button>
+    </section>
+
+    <section id="stats">
+      <h2>Statistik</h2>
+      <p id="statText">Belum ada data</p>
+    </section>
+  </main>
+
+  <script src="storage.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

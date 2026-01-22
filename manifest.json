@@ -1,0 +1,8 @@
+{
+  "name": "Tracker Ibadah Pribadi",
+  "short_name": "Ibadah",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f5eb",
+  "theme_color": "#1b5e20"
+}
